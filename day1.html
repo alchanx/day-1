@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AlcHanx Cloud - Super Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--neon:#a855f7;--neon2:#22d3ee}
+*{box-sizing:border-box}body{margin:0;background:#08080a;color:#fff;font-family:'Space Grotesk',system-ui}
+.header{position:sticky;top:0;z-index:10;background:#08080acc;backdrop-filter:blur(12px);border-bottom:1px solid #222;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:700;font-size:20px;letter-spacing:-1px}.logo span{color:var(--neon)}
+.grid{max-width:1100px;margin:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:linear-gradient(180deg,#14141a,#0f0f12);border:1px solid #222;border-radius:20px;padding:16px;position:relative;overflow:hidden}
+.card h3{margin:4px 0 10px;font-size:16px}
+.badge{font-size:10px;padding:4px 8px;border-radius:99px;background:#1f1f25;border:1px solid #333;color:#aaa}
+.btn{width:100%;padding:12px;border-radius:12px;border:0;font-weight:700;cursor:pointer;margin-top:8px;background:#fff;color:#000}
+.btn-neon{background:linear-gradient(90deg,var(--neon),var(--neon2));color:#fff}
+.input,textarea{width:100%;padding:12px;border-radius:12px;background:#0a0a0e;border:1px solid #2a2a35;color:#fff;font-family:'JetBrains Mono';outline:none}
+textarea{min-height:120px}
+.preview{margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid #222;background:#000;min-height:100px;display:grid;place-items:center}
+.tag{font-size:11px;color:#666}
+.divider{height:1px;background:#222;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">AlcHanx <span>CLOUD</span></div>
+<div class="badge">v2.0 • ONLINE</div>
+</div>
+
+<div class="grid">
+
+<!-- 1. CODING / DEPLOY -->
+<div class="card">
+<h3>💻 Ngoding & Deploy</h3>
+<span class="badge">HTML / JS Live</span>
+<textarea id="code" placeholder="<h1>Halo AlcHanx</h1>"><h1 style="color:#a855f7">Halo AlcHanx Cloud ☁️</h1><p>Edit code disini langsung live preview</p></textarea>
+<button class="btn btn-neon" onclick="runCode()">RUN PREVIEW</button>
+<button class="btn" onclick="downloadCode()">DOWNLOAD index.html</button>
+<div class="preview" id="livePrev"></div>
+</div>
+
+<!-- 2. TIKTOK DOWNLOADER UI -->
+<div class="card">
+<h3>🎬 TikTok Downloader</h3>
+<span class="badge">No Watermark</span>
+<input class="input" id="tturl" placeholder="Paste link TikTok disini...">
+<button class="btn btn-neon" onclick="downloadTT()">GET VIDEO</button>
+<small class="tag">*Gunakan API publik: ssstik / tikwm. Tempel link, nanti kebuka di tab baru untuk save.</small>
+<div id="ttResult" class="tag" style="margin-top:8px"></div>
+</div>
+
+<!-- 3. FAKE SOSMED PROFILE - FOR DESIGN ONLY -->
+<div class="card">
+<h3>👤 Fake Profile Generator</h3>
+<span class="badge">For Design / Mockup ONLY</span>
+<input class="input" id="fakeName" placeholder="Nama Palsu: AlcHanx Ganteng">
+<input class="input" id="fakeUser" placeholder="Username: @alchanx" style="margin-top:6px">
+<select id="fakePlat" class="input" style="margin-top:6px">
+<option value="TikTok">TikTok</option><option value="Instagram">Instagram</option><option value="Facebook">Facebook</option>
+</select>
+<input type="file" id="fakeAva" class="input" style="margin-top:6px" accept="image/*">
+<button class="btn btn-neon" onclick="genFake()">GENERATE</button>
+<div class="preview" id="fakePrev" style="padding:14px">
+<div style="text-align:center;color:#555">Preview muncul disini</div>
+</div>
+<p class="tag">⚠️ Jangan dipake buat nipu / impersonate orang asli. Cuma buat konten / design.</p>
+</div>
+
+<!-- 4. BRAT STICKER -->
+<div class="card">
+<h3>💚 Brat Sticker Generator</h3>
+<span class="badge">Charli XCX Style</span>
+<input class="input" id="bratText" placeholder="Tulis: brat" value="alchanx">
+<input class="input" id="bratColor" type="color" value="#8cff00" style="margin-top:6px;height:44px;padding:4px">
+<button class="btn" style="background:#8cff00" onclick="genBrat()">GENERATE BRAT</button>
+<canvas id="bratCanvas" width="500" height="500" style="width:100%;border-radius:12px;margin-top:10px;background:#8cff00"></canvas>
+<button class="btn" onclick="downloadBrat()">DOWNLOAD PNG</button>
+</div>
+
+<!-- 5. MORE TOOLS -->
+<div class="card">
+<h3>🧰 More Tools</h3>
+<button class="btn" onclick="alert('Fitur Deploy ke Cloudflare: Upload repo lu ke github, connect ke cloudflare pages. Cepat!')">☁️ Deploy ke Cloudflare</button>
+<button class="btn" onclick="alert('Base64 / Encode / Obfuscator coming soon')">🔐 Obfuscator</button>
+<button class="btn" onclick="location.href='https://github.com'">🔗 My GitHub</button>
+<div class="divider"></div>
+<small class="tag">AlcHanx Cloud dibuat untuk edukasi & tools legal. No phising, no scam.</small>
+</div>
+
+</div>
+
+<script>
+// 1. Live Code
+function runCode(){ document.getElementById('livePrev').innerHTML=document.getElementById('code').value }
+function downloadCode(){ let b=new Blob([document.getElementById('code').value],{type:'text/html'}); let a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='index.html';a.click() }
+runCode();
+
+// 2. TikTok - redirect to public downloader API (legal)
+function downloadTT(){
+ let url=document.getElementById('tturl').value.trim();
+ if(!url) return alert('Paste link dulu');
+ document.getElementById('ttResult').innerText='Opening downloader...';
+ window.open('https://ssstik.io/en?url='+encodeURIComponent(url),'_blank');
+}
+
+// 3. Fake Profile Mockup
+let avaData='';
+document.getElementById('fakeAva').addEventListener('change',e=>{
+ let r=new FileReader(); r.onload=()=>avaData=r.result; r.readAsDataURL(e.target.files[0]);
+});
+function genFake(){
+ let name=document.getElementById('fakeName').value||'AlcHanx';
+ let user=document.getElementById('fakeUser').value||'@alchanx';
+ let plat=document.getElementById('fakePlat').value;
+ let ava=avaData||'https://i.pravatar.cc/100?u='+name;
+ document.getElementById('fakePrev').innerHTML=`
+ <div style="width:100%;background:#000;padding:12px;border-radius:12px;border:1px solid #222">
+ <div style="display:flex;gap:10px;align-items:center">
+ <img src="${ava}" style="width:48px;height:48px;border-radius:50%;object-fit:cover">
+ <div><b>${name}</b><div style="font-size:12px;color:#888">${user} • ${plat}</div></div>
+ <div style="margin-left:auto;background:#222;padding:4px 8px;border-radius:99px;font-size:10px">MOCKUP</div>
+ </div>
+ <div style="margin-top:10px;font-size:13px;color:#ccc">Ini adalah profile palsu untuk kebutuhan design / konten parodi. Bukan akun asli.</div>
+ </div>`;
+}
+
+// 4. Brat
+function genBrat(){
+ let c=document.getElementById('bratCanvas'); let ctx=c.getContext('2d');
+ let txt=document.getElementById('bratText').value||'brat';
+ let col=document.getElementById('bratColor').value;
+ ctx.fillStyle=col; ctx.fillRect(0,0,500,500);
+ ctx.fillStyle='#000'; ctx.font='60px Arial'; ctx.textAlign='center';
+ ctx.filter='blur(1.5px)';
+ let lines=txt.match(/.{1,10}/g) || [txt];
+ lines.forEach((l,i)=>{ ctx.fillText(l.toLowerCase(),250,230+i*70) });
+}
+function downloadBrat(){ let a=document.createElement('a'); a.download='brat-alchanx.png'; a.href=document.getElementById('bratCanvas').toDataURL(); a.click(); }
+genBrat();
+</script>
+</body>
+</html>
